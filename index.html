@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>ViewPoint</title>
+  <link rel="icon" href="logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --roxo: #5a2bd8;
+      --roxo-escuro: #3d1bb3;
+      --preto: #0f0f0f;
+      --branco: #ffffff;
+      --cinza: #cfcfcf;
+      --verde: #25D366;
+      --vermelho: #e63946;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--roxo), var(--roxo-escuro));
+      color: var(--branco);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 90px 20px 60px;
+    }
+
+    .logo {
+      width: 100px;
+      margin-bottom: 10px;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: var(--cinza);
+      max-width: 600px;
+      margin: 0 auto;
+      font-size: 1.1rem;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+
+    .section {
+      position: relative; /* necessário pro botão flutuar */
+      background: rgba(0,0,0,0.35);
+      border-radius: 18px;
+      padding: 30px;
+      backdrop-filter: blur(12px);
+      transition: 0.3s;
+    }
+
+    .section:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .section h2 {
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+      border-left: 4px solid var(--branco);
+      padding-left: 10px;
+    }
+
+    .section p {
+      color: var(--cinza);
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--preto);
+      background: rgba(255,255,255, 0.9);
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: 0.3s;
+      font-size: 0.9rem;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: var(--cinza)
+    }
+
+    .btn.github {
+      background: #171515;
+      color: var(--branco);
+    }
+
+    .btn.github:hover {
+      background: #000;
+    }
+
+    .btn.whatsapp {
+      background: var(--verde);
+      color: var(--branco);
+      border: none;
+    }
+
+    .btn.whatsapp:hover {
+      background: #18a651;
+    }
+
+    .btn.email {
+      background: var(--vermelho);
+      border: none;
+      color: var(--branco);
+    }
+
+    .btn.email:hover {
+      background: #af2631;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      border-radius: 8px;
+      padding: 8px;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255,255,255,0.25);
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: var(--cinza);
+      font-size: 0.9rem;
+    }
+
+    .lang-select {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+    }
+
+    .lang-select:hover {
+      cursor: pointer;
+    }
+
+    .lang-select:focus {
+      outline: 2px solid white;
+    }
+
+    .btn.copied {
+      background: #2ecc71 !important;
+      color: white !important;
+    }
+    .toast {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(0,0,0,0.85);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s ease;
+  z-index: 999;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.lang-dropdown {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
+
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.lang-btn img {
+  width: 20px;
+  border-radius: 3px;
+}
+
+.lang-menu {
+  margin-top: 1px;
+  background: rgba(0,0,0,0.9);
+  border-radius: 10px;
+  overflow: hidden;
+  display: none;
+}
+
+.lang-dropdown:hover .lang-menu {
+  display: block;
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.lang-option img {
+  width: 20px;
+}
+
+.lang-option:hover {
+  background: rgba(255,255,255,0.1);
+}
+.lang-dropdown {
+  position: fixed;
+  right: 20px;
+  z-index: 1000;
+}
+.lang-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+
+  background: rgba(0,0,0,0.9);
+  border-radius: 10px;
+  overflow: hidden;
+
+  display: none;
+  min-width: 160px;
+}
+.lang-dropdown {
+  position: fixed;
+  right: 20px;
+  z-index: 1000;
+}
+.lang-dropdown {
+  position: fixed;
+}
+  </style>
+</head>
+<div id="toast" class="toast">E-mail copiado para a área de transferência!</div>
+<body>
+
+<div style="position: fixed; top: 20px; right: 20px;">
+<div class="lang-dropdown">
+  <button class="lang-btn">
+    <img id="flag" src="https://flagcdn.com/w40/br.png">
+    <span id="lang-label">PT</span>
+    <i class="fa-solid fa-chevron-down"></i>
+  </button>
+
+  <div class="lang-menu">
+    <div onclick="setLang('pt')" class="lang-option">
+      <img src="https://flagcdn.com/w40/br.png"> Português
+    </div>
+    <div onclick="setLang('en')" class="lang-option">
+      <img src="https://flagcdn.com/w40/us.png"> English
+    </div>
+  </div>
+</div>
+</div>
+
+<section class="hero">
+  <img src="logo.png" class="logo">
+
+  <h1>ViewPoint</h1>
+
+  <p id="desc">
+    Controle o computador com os olhos. Um sistema de rastreamento ocular
+    voltado à acessibilidade e interação humano-computador.
+  </p>
+
+  <div style="margin-top:40px;">
+    <img src="banner.png" style="width:100%; max-width:750px; border-radius:20px; box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+  </div>
+</section>
+
+<div class="container">
+
+  <div class="section">
+    <h2 id="pub-title">📄 Publicações</h2>
+    <p id="pub-text">
+      Aqui você pode acessar os materiais acadêmicos desenvolvidos ao longo do projeto.
+    </p>
+
+    <div class="buttons">
+      <a href="#" class="btn" id="btn-article">
+        <i class="fa-solid fa-book"></i> Artigo
+      </a>
+      <a href="#" class="btn" id="btn-tcc">
+        <i class="fa-solid fa-graduation-cap"></i> TCC
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 id="code-title">💻 Código</h2>
+    <p id="code-text">
+      Aqui você pode baixar o código do projeto e executar no seu próprio computador.
+    </p>
+
+    <div class="buttons">
+      <a href="https://github.com/gioperovano/ViewPoint" class="btn github">
+        <i class="fa-brands fa-github"></i> GitHub
+      </a>
+      <a href="https://github.com/gioperovano/ViewPoint" class="btn github">
+        <i class="fa-brands fa-app-store"></i> Aplicativo
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    
+    <button onclick="copyEmail()" class="copy-btn">
+      <i class="fa-regular fa-copy"></i>
+    </button>
+
+    <h2 id="contact-title">📬 Contato</h2>
+    <p id="contact-text">
+      Tem alguma dúvida, sugestão ou crítica? Fique à vontade para entrar em contato.
+    </p>
+
+    <div class="buttons">
+
+      <a href="https://wa.me/5577992047750" class="btn whatsapp">
+        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+      </a>
+
+      <a href="mailto:gio.perovano@gmail.com" class="btn email">
+        <i class="fa-solid fa-envelope"></i> E-mail
+      </a>
+
+    </div>
+  </div>
+
+</div>
+
+<footer id="footer">
+  Desenvolvido para fins acadêmicos • ViewPoint
+</footer>
+
+<script>
+function changeLang(lang) {
+
+  if (lang === "en") {
+
+    document.getElementById("desc").innerText =
+      "Control your computer with your eyes. An eye tracking system focused on accessibility and human-computer interaction.";
+
+    document.getElementById("pub-title").innerText = "📄 Publications";
+    document.getElementById("pub-text").innerText =
+      "Access the academic materials developed throughout the project.";
+
+    document.getElementById("code-title").innerText = "💻 Source Code";
+    document.getElementById("code-text").innerText =
+      "Download the project code and run it on your own computer.";
+
+    document.getElementById("contact-title").innerText = "📬 Contact";
+    document.getElementById("contact-text").innerText =
+      "Any questions, suggestions or feedback? Feel free to reach out.";
+
+    document.getElementById("footer").innerText =
+      "Developed for academic purposes • ViewPoint";
+
+    document.getElementById("btn-article").innerHTML = '<i class="fa-solid fa-book"></i> Paper';
+    document.getElementById("btn-tcc").innerHTML = '<i class="fa-solid fa-graduation-cap"></i> Thesis';
+
+  } else {
+
+    document.getElementById("desc").innerText =
+      "Controle o computador com os olhos. Um sistema de rastreamento ocular voltado à acessibilidade e interação humano-computador.";
+
+    document.getElementById("pub-title").innerText = "📄 Publicações";
+    document.getElementById("pub-text").innerText =
+      "Aqui você pode acessar os materiais acadêmicos desenvolvidos ao longo do projeto.";
+
+    document.getElementById("code-title").innerText = "💻 Código";
+    document.getElementById("code-text").innerText =
+      "Aqui você pode baixar o código do projeto e executar no seu próprio computador.";
+
+    document.getElementById("contact-title").innerText = "📬 Contato";
+    document.getElementById("contact-text").innerText =
+      "Tem alguma dúvida, sugestão ou crítica? Fique à vontade para entrar em contato.";
+
+    document.getElementById("footer").innerText =
+      "Desenvolvido para fins acadêmicos • ViewPoint";
+
+    document.getElementById("btn-article").innerHTML = '<i class="fa-solid fa-book"></i> Artigo';
+    document.getElementById("btn-tcc").innerHTML = '<i class="fa-solid fa-graduation-cap"></i> TCC';
+  }
+}
+
+function copyEmail() {
+  const email = "gio.perovano@gmail.com";
+
+  navigator.clipboard.writeText(email).then(() => {
+    const btn = document.querySelector(".copy-btn");
+    const toast = document.getElementById("toast");
+
+    btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+
+    setTimeout(() => {
+      btn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+    }, 1500);
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 2000);
+  });
+}
+function setLang(lang) {
+  changeLang(lang);
+
+  const flag = document.getElementById("flag");
+  const label = document.getElementById("lang-label");
+
+  if (lang === "en") {
+    flag.src = "https://flagcdn.com/w40/us.png";
+    label.innerText = "EN";
+  } else {
+    flag.src = "https://flagcdn.com/w40/br.png";
+    label.innerText = "PT";
+  }
+}
+</script>
+
+</body>
+</html>
